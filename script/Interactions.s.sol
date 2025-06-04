@@ -14,7 +14,7 @@ import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
 contract FundFundMe is Script {
     // forge script script/Interactions.s.sol:FundFundMe --rpc-url <YOUR_RPC> --broadcast
 
-    uint AMT_TO_SEND = 0.1 ether;
+    uint256 AMT_TO_SEND = 0.1 ether;
 
     function fundFundMe(address mostRecentDeployed) public {
         vm.startBroadcast();
@@ -30,10 +30,7 @@ contract FundFundMe is Script {
 
         // we want to fund the most recent deployed contract
         // so we will use the some foundry-devops tools which helps to keep track of most recently deployed contract
-        address mostRecentDeployed = DevOpsTools.get_most_recent_deployment(
-            "FundMe",
-            block.chainid
-        );
+        address mostRecentDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
 
         fundFundMe(mostRecentDeployed);
     }
@@ -41,7 +38,7 @@ contract FundFundMe is Script {
 
 contract WithdrawFundMe is Script {
     // forge script script/Interactions.s.sol:fundFundMe
-    uint public constant AMT_TO_SEND = 0.1 ether;
+    uint256 public constant AMT_TO_SEND = 0.1 ether;
 
     function withdrawFundMe(address mostRecentDeployed) public {
         vm.startBroadcast();
@@ -57,12 +54,8 @@ contract WithdrawFundMe is Script {
 
         // we want to fund the most recent deployed contract
         // so we will use the some foundry-devops tools which helps to keep track of most recently deployed contract
-        address mostRecentDeployed = DevOpsTools.get_most_recent_deployment(
-            "FundMe",
-            block.chainid
-        );
+        address mostRecentDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
 
         withdrawFundMe(mostRecentDeployed);
     }
 }
-

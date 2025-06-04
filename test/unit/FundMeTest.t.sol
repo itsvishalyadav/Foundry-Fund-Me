@@ -10,9 +10,9 @@ contract FundMeTest is Test {
     // used to remove confusion of where to use msg.sender and where address(this)
     address USER = makeAddr("user");
     // we also have to give him some balance to start with
-    uint public constant STARTING_BALANCE = 10 ether;
+    uint256 public constant STARTING_BALANCE = 10 ether;
 
-    uint public constant AMT_TO_SEND = 0.1 ether;
+    uint256 public constant AMT_TO_SEND = 0.1 ether;
 
     FundMe fundMe;
 
@@ -31,7 +31,7 @@ contract FundMeTest is Test {
     }
 
     function testCorrectPriceFeedVerion() public view {
-        uint version = fundMe.getVersion();
+        uint256 version = fundMe.getVersion();
         assertEq(version, 4); // Assuming the version is 4, change as per actual version
     }
 
@@ -43,7 +43,7 @@ contract FundMeTest is Test {
     function testFundFuncUpdateMapping() public funded {
         //vm.prank(USER); //next txn will be made by USER
         //fundMe.fund{value: AMT_TO_SEND}();         //commenting both lines because of funded modifier
-        uint amountFunded = fundMe.getAddressToAmtFunded(USER);
+        uint256 amountFunded = fundMe.getAddressToAmtFunded(USER);
         assertEq(amountFunded, AMT_TO_SEND);
     }
 
@@ -66,32 +66,24 @@ contract FundMeTest is Test {
     }
 
     function testWithdrawFromSingleFunder() public funded {
-
         // User will fund --> owner will withdraw --> check balances
 
-
         // Arrange
-        uint ownerInitialBalance = fundMe.getOwner().balance;
-        uint contractInitialBalance = address(fundMe).balance;
+        uint256 ownerInitialBalance = fundMe.getOwner().balance;
+        uint256 contractInitialBalance = address(fundMe).balance;
 
         // Act
         vm.prank(fundMe.getOwner()); // simulate the owner calling the function
         fundMe.withdraw();
 
         // Assert
-        uint ownerFinalBalance = fundMe.getOwner().balance;
-        uint contractFinalBalance = address(fundMe).balance;
+        uint256 ownerFinalBalance = fundMe.getOwner().balance;
+        uint256 contractFinalBalance = address(fundMe).balance;
 
         assertEq(
-            ownerFinalBalance,
-            contractInitialBalance + ownerInitialBalance,
-            "Owner balance incorrect after withdrawal"
+            ownerFinalBalance, contractInitialBalance + ownerInitialBalance, "Owner balance incorrect after withdrawal"
         );
-        assertEq(
-            contractFinalBalance,
-            0,
-            "Contract balance should be zero after withdrawal"
-        );
+        assertEq(contractFinalBalance, 0, "Contract balance should be zero after withdrawal");
     }
 
     function testWithdrawFromMultipleFunders() public {
@@ -102,18 +94,18 @@ contract FundMeTest is Test {
         uint160 noOfFunders = 10;
         uint160 startingFunderIndex = 1;
 
-            // multiple users ko pahle kuch balance denge
-            // fir wo users contract me fund karenge
+        // multiple users ko pahle kuch balance denge
+        // fir wo users contract me fund karenge
         for (uint160 i = startingFunderIndex; i < noOfFunders; i++) {
             // vm.prank new address
             // vm.deal new address
             // instead of doing  both we have hoax that does both simul
-            hoax(address(i), AMT_TO_SEND);  //hoax-->agla txn address(i) karega aur saath me address(i) ko AMT_TO_SEND ether bhi de diye
+            hoax(address(i), AMT_TO_SEND); //hoax-->agla txn address(i) karega aur saath me address(i) ko AMT_TO_SEND ether bhi de diye
             fundMe.fund{value: AMT_TO_SEND}();
         }
 
-        uint ownerInitialBalance = fundMe.getOwner().balance;
-        uint contractInitialBalance = address(fundMe).balance;
+        uint256 ownerInitialBalance = fundMe.getOwner().balance;
+        uint256 contractInitialBalance = address(fundMe).balance;
 
         // Act
 
@@ -125,19 +117,13 @@ contract FundMeTest is Test {
         vm.stopPrank();
 
         // Assert
-        uint ownerFinalBalance = fundMe.getOwner().balance;
-        uint contractFinalBalance = address(fundMe).balance;
+        uint256 ownerFinalBalance = fundMe.getOwner().balance;
+        uint256 contractFinalBalance = address(fundMe).balance;
 
         assertEq(
-            ownerFinalBalance,
-            contractInitialBalance + ownerInitialBalance,
-            "Owner balance incorrect after withdrawal"
+            ownerFinalBalance, contractInitialBalance + ownerInitialBalance, "Owner balance incorrect after withdrawal"
         );
-        assertEq(
-            contractFinalBalance,
-            0,
-            "Contract balance should be zero after withdrawal"
-        );
+        assertEq(contractFinalBalance, 0, "Contract balance should be zero after withdrawal");
     }
 
     function testCheaperWithdrawFromMultipleFunders() public {
@@ -148,18 +134,18 @@ contract FundMeTest is Test {
         uint160 noOfFunders = 10;
         uint160 startingFunderIndex = 1;
 
-            // multiple users ko pahle kuch balance denge
-            // fir wo users contract me fund karenge
+        // multiple users ko pahle kuch balance denge
+        // fir wo users contract me fund karenge
         for (uint160 i = startingFunderIndex; i < noOfFunders; i++) {
             // vm.prank new address
             // vm.deal new address
             // instead of doing  both we have hoax that does both simul
-            hoax(address(i), AMT_TO_SEND);  //hoax-->agla txn address(i) karega aur saath me address(i) ko AMT_TO_SEND ether bhi de diye
+            hoax(address(i), AMT_TO_SEND); //hoax-->agla txn address(i) karega aur saath me address(i) ko AMT_TO_SEND ether bhi de diye
             fundMe.fund{value: AMT_TO_SEND}();
         }
 
-        uint ownerInitialBalance = fundMe.getOwner().balance;
-        uint contractInitialBalance = address(fundMe).balance;
+        uint256 ownerInitialBalance = fundMe.getOwner().balance;
+        uint256 contractInitialBalance = address(fundMe).balance;
 
         // Act
 
@@ -171,19 +157,13 @@ contract FundMeTest is Test {
         vm.stopPrank();
 
         // Assert
-        uint ownerFinalBalance = fundMe.getOwner().balance;
-        uint contractFinalBalance = address(fundMe).balance;
+        uint256 ownerFinalBalance = fundMe.getOwner().balance;
+        uint256 contractFinalBalance = address(fundMe).balance;
 
         assertEq(
-            ownerFinalBalance,
-            contractInitialBalance + ownerInitialBalance,
-            "Owner balance incorrect after withdrawal"
+            ownerFinalBalance, contractInitialBalance + ownerInitialBalance, "Owner balance incorrect after withdrawal"
         );
-        assertEq(
-            contractFinalBalance,
-            0,
-            "Contract balance should be zero after withdrawal"
-        );
+        assertEq(contractFinalBalance, 0, "Contract balance should be zero after withdrawal");
     }
 
     modifier funded() {

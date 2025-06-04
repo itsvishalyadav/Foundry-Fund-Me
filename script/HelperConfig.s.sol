@@ -23,10 +23,9 @@ contract HelperConfig is Script {
     }
 
     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
-        return
-            NetworkConfig({
-                priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306 // Sepolia ETH/USD price feed address
-            });
+        return NetworkConfig({
+            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306 // Sepolia ETH/USD price feed address
+        });
     }
 
     function getCreateAnvilEthConfig() public returns (NetworkConfig memory) {
@@ -37,15 +36,11 @@ contract HelperConfig is Script {
         // Deploy a mock price feed for Anvil
 
         vm.startBroadcast();
-        MockV3Aggregator mockPriceFeed = new MockV3Aggregator(
-            DECIMALS,
-            INITIAL_PRICE
-        ); // 2000 USD per ETH
+        MockV3Aggregator mockPriceFeed = new MockV3Aggregator(DECIMALS, INITIAL_PRICE); // 2000 USD per ETH
         vm.stopBroadcast();
 
-        return
-            NetworkConfig({
-                priceFeed: address(mockPriceFeed) // Mock price feed address
-            });
+        return NetworkConfig({
+            priceFeed: address(mockPriceFeed) // Mock price feed address
+        });
     }
 }

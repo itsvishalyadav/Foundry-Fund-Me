@@ -3,23 +3,7 @@ pragma solidity ^0.8.0;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-
-
-
-
 // MockV3Aggregator is a mock contract that mimics the behavior of the real Chainlink Price Feed AggregatorV3Interface. It's used primarily for testing and local development environments.
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * @title MockV3Aggregator

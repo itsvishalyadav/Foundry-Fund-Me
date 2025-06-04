@@ -9,7 +9,7 @@ import {PriceConverter} from "./PriceConverter.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 contract FundMe {
-    using PriceConverter for uint;
+    using PriceConverter for uint256;
 
     // instead of normal declaration
     // set it immuatable as we are not defining it and it is not changeable after contract is deployed
@@ -28,23 +28,20 @@ contract FundMe {
     // which will save a lot of gas for us
 
     // uint public minimumAmount = 5 * 1e8;
-    uint public constant MINIMUM_AMT = 5 * 1e8;
+    uint256 public constant MINIMUM_AMT = 5 * 1e8;
 
     // we should make these private for more gas efficiency....now to get values of these we will use getter which are at the end of page
     address[] private s_funders;
-    mapping(address => uint) private s_addressToAmtFunded;
+    mapping(address => uint256) private s_addressToAmtFunded;
 
-    function getVersion() public view returns (uint) {
+    function getVersion() public view returns (uint256) {
         return s_priceFeed.version();
     }
 
     function fund() public payable {
         // allow user to send money with a minimum usd limit
 
-        require(
-            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_AMT,
-            "Send ether more than required amount"
-        );
+        require(msg.value.getConversionRate(s_priceFeed) >= MINIMUM_AMT, "Send ether more than required amount");
         //1e18=1*10**18, require is neccessary condition, msg.value gives amnt sent in wei
 
         // if the require statement is not fulfilled then it gets reverted...meaning it goes back to that point before executing the fund function
@@ -56,7 +53,7 @@ contract FundMe {
     function withdraw() public onlyOwner {
         // require(msg.sender==i_owner,"Must be i_owner!!");    we have used modifier so no need
 
-        for (uint i = 0; i < s_funders.length; i++) {
+        for (uint256 i = 0; i < s_funders.length; i++) {
             s_addressToAmtFunded[s_funders[i]] = 0;
         }
 
@@ -75,24 +72,20 @@ contract FundMe {
 
         // 3.call
 
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         require(callSuccess, "Call Failed");
     }
 
     // to make our function more gas efficient
     function cheaperWithdraw() public onlyOwner {
-        uint fundersLength = s_funders.length;
-        for (uint i = 0; i < fundersLength; i++) {
+        uint256 fundersLength = s_funders.length;
+        for (uint256 i = 0; i < fundersLength; i++) {
             s_addressToAmtFunded[s_funders[i]] = 0;
         }
 
         s_funders = new address[](0);
 
-        (bool callSuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         require(callSuccess, "Call Failed");
     }
 
@@ -117,14 +110,14 @@ contract FundMe {
     }
 
     // Getters
-    function getAddressToAmtFunded(
-        address funder
-    ) external view returns (uint) {
+    function getAddressToAmtFunded(address funder) external view returns (uint256) {
         return s_addressToAmtFunded[funder];
     }
-    function getFunder(uint index) external view returns (address) {
+
+    function getFunder(uint256 index) external view returns (address) {
         return s_funders[index];
     }
+
     function getOwner() external view returns (address) {
         return i_owner;
     }
