@@ -1,64 +1,90 @@
-## Foundry
+# 🪙 Foundry Fund Me
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A decentralized crowdfunding smart contract built with [Foundry](https://book.getfoundry.sh/).  
+Anyone can fund the contract in ETH, and the owner can withdraw the funds.  
+Uses Chainlink Price Feeds to enforce a minimum USD equivalent contribution.
 
-Foundry consists of:
+---
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## 🚀 Features
+
+✅ Accepts ETH from multiple funders  
+✅ Records each funder’s contribution  
+✅ Enforces a configurable minimum funding amount in USD  
+✅ Allows only the contract owner to withdraw funds  
+✅ Fully tested with Foundry  
+
+---
 
 
+## 🛠️ Prerequisites
 
-## Usage
+- [Foundry](https://book.getfoundry.sh/getting-started/installation)
+- An Ethereum node (Alchemy, Infura, etc.)
+- A funded wallet private key
 
-### Build
+---
 
-```shell
-$ forge build
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/itsvishalyadav/Foundry-Fund-Me.git
+cd Foundry-Fund-Me
+```
+Install dependencies:
+
+```bash
+forge install
 ```
 
-### Test
+🧪 Running Tests
+Run all tests:
 
-```shell
-$ forge test
+```bash
+forge test
 ```
+Run tests with gas reporting:
 
-### Format
-
-```shell
-$ forge fmt
+```bash
+forge test --gas-report
 ```
+📝 Deployment
+🚀 Local Deployment (Anvil)
+1️⃣ Start Anvil:
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
+```bash
+anvil
 ```
+2️⃣ Deploy contract:
 
-### Anvil
-
-```shell
-$ anvil
+```bash
+forge script script/DeployFundMe.s.sol \
+  --rpc-url http://localhost:8545 \
+  --private-key <YOUR_PRIVATE_KEY> \
+  --broadcast
 ```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+🌐 Testnet Deployment (e.g., Sepolia)
+```bash
+forge script script/DeployFundMe.s.sol \
+  --rpc-url <YOUR_RPC_URL> \
+  --private-key <YOUR_PRIVATE_KEY> \
+  --broadcast \
+  --verify
 ```
+## 🔒 Security Considerations
+- Uses Chainlink data feeds for reliable price conversion
 
-### Cast
+- Never commit private keys to version control
 
-```shell
-$ cast <subcommand>
-```
+- Thoroughly test all functionality before deploying to mainnet
 
-### Help
+## 🙌 Acknowledgements
+Inspired by:
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- Patrick Collins’s Foundry and Solidity tutorials
+
+- Chainlink Price Feeds
+
+- Foundry’s blazing fast tooling
